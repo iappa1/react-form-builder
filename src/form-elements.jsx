@@ -4,7 +4,6 @@ import xss from 'xss';
 import { format, parse } from 'date-fns';
 // import moment from 'moment';
 import SignaturePad from 'react-signature-canvas';
-import ReactBootstrapSlider from 'react-bootstrap-slider';
 import ReactDatePicker from 'react-datepicker';
 import StarRating from './star-rating';
 import HeaderBar from './header-bar';
@@ -856,7 +855,6 @@ class Range extends React.Component {
               <span className="pull-left">{this.props.data.min_label}</span>
               <span className="pull-right">{this.props.data.max_label}</span>
             </div>
-            <ReactBootstrapSlider {...props} />
           </div>
           <div className="visible_marks">
             {visible_marks}
