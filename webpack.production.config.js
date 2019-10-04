@@ -6,7 +6,7 @@ module.exports = {
 
   output: {
     path: path.resolve('./dist'),
-    filename: 'app.js',
+    filename: 'index.js',
     library: 'ReactFormBuilder',
     libraryTarget: 'umd'
   },
