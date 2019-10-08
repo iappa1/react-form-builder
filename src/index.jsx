@@ -42,8 +42,9 @@ class ReactFormBuilder extends React.Component {
   render() {
     const toolbarProps = {};
     if (this.props.toolbarItems) { toolbarProps.items = this.props.toolbarItems; }
+    if (this.props.customAttributes) { toolbarProps.customAttributes = this.props.customAttributes; }
     return (
-       <div>
+       <div className="phion-builder">
          {/* <div>
            <p>
              It is easy to implement a sortable interface with React DnD. Just make
@@ -55,6 +56,12 @@ class ReactFormBuilder extends React.Component {
          <div className="react-form-builder clearfix">
            <div>
              <Preview files={this.props.files}
+                 customAttributes={this.props.customAttributes}
+                 formColor={this.props.formColor}
+                 borderWidth={this.props.borderWidth}
+                 borderColor={this.props.borderColor}
+                 borderType={this.props.borderType}
+                 background_image_url={this.props.background_image_url}
                  manualEditModeOff={this.manualEditModeOff.bind(this)}
                  showCorrectColumn={this.props.showCorrectColumn}
                  parent={this}

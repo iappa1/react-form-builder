@@ -3,9 +3,10 @@
     position: relative;
     width: 70%;
     border: 1px solid #ddd;
-    background: #fafafa;
+    // background: #fafafa;
     padding: 10px;
-    box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.25);
     min-height: 750px;
 
     .preview-page-break {
@@ -142,6 +143,8 @@
       user-select: none;
       .rfb-item {
         padding: 10px 20px;
+        border-radius: 10px;
+        transition-duration: 0.1s;
         &.SortableItem {
           position: relative;
           .form-group {
@@ -192,8 +195,8 @@
           }
         }
         &:hover {
-          box-shadow: inset 0 0 5px #ddd;
-          background: #fff;
+          // box-shadow: 0 0 5px white;
+          background: rgba(255, 255, 255, 0.25);
           select, input {
             cursor: move;
             pointer-events: none;
@@ -405,11 +408,12 @@
 
 .form-place-holder {
   margin:10px; 
-  border:2px dashed #bbb;
+  border: 1px dashed #aaa;
   -moz-border-radius:5px;
   -webkit-border-radius:5px;
   border-radius:5px;
   padding:25px;
   text-align:center;
-  font:20pt bold,"Vollkorn";color:#bbb
+  font: 16px bold,"Arial";
+  color:#aaa;
 }

@@ -52,6 +52,15 @@ export default class Toolbar extends React.Component {
   _defaultItems() {
     return [
       {
+        key: 'Attributes',
+        canHaveAnswer: true,
+        name: 'Custom Attribute',
+        label: 'Custom Attribute',
+        icon: 'fa fa-address-card-o',
+        field_name: 'attribute_input_',
+        selected_attribute: '',
+      },
+      {
         key: 'Header',
         name: 'Header Text',
         icon: 'fa fa-header',
@@ -87,15 +96,15 @@ export default class Toolbar extends React.Component {
         field_name: 'dropdown_',
         options: [],
       },
-      {
-        key: 'Tags',
-        canHaveAnswer: true,
-        name: 'Tags',
-        icon: 'fa fa-tags',
-        label: 'Placeholder Label',
-        field_name: 'tags_',
-        options: [],
-      },
+      // {
+      //   key: 'Tags',
+      //   canHaveAnswer: true,
+      //   name: 'Tags',
+      //   icon: 'fa fa-tags',
+      //   label: 'Placeholder Label',
+      //   field_name: 'tags_',
+      //   options: [],
+      // },
       {
         key: 'Checkboxes',
         canHaveAnswer: true,
@@ -146,14 +155,14 @@ export default class Toolbar extends React.Component {
         field_name: 'image_',
         src: '',
       },
-      {
-        key: 'Rating',
-        canHaveAnswer: true,
-        name: 'Rating',
-        label: 'Placeholder Label',
-        icon: 'fa fa-star',
-        field_name: 'rating_',
-      },
+      // {
+      //   key: 'Rating',
+      //   canHaveAnswer: true,
+      //   name: 'Rating',
+      //   label: 'Placeholder Label',
+      //   icon: 'fa fa-star',
+      //   field_name: 'rating_',
+      // },
       {
         key: 'DatePicker',
         canDefaultToday: true,
@@ -167,14 +176,14 @@ export default class Toolbar extends React.Component {
         label: 'Placeholder Label',
         field_name: 'date_picker_',
       },
-      {
-        key: 'Signature',
-        canReadOnly: true,
-        name: 'Signature',
-        icon: 'fa fa-pencil-square-o',
-        label: 'Signature',
-        field_name: 'signature_',
-      },
+      // {
+      //   key: 'Signature',
+      //   canReadOnly: true,
+      //   name: 'Signature',
+      //   icon: 'fa fa-pencil-square-o',
+      //   label: 'Signature',
+      //   field_name: 'signature_',
+      // },
       {
         key: 'HyperLink',
         name: 'Web site',
@@ -183,40 +192,40 @@ export default class Toolbar extends React.Component {
         content: 'Placeholder Web site link ...',
         href: 'http://www.example.com',
       },
-      {
-        key: 'Download',
-        name: 'File Attachment',
-        icon: 'fa fa-file',
-        static: true,
-        content: 'Placeholder file name ...',
-        field_name: 'download_',
-        file_path: '',
-        _href: '',
-      },
-      {
-        key: 'Range',
-        name: 'Range',
-        icon: 'fa fa-sliders',
-        label: 'Placeholder Label',
-        field_name: 'range_',
-        step: 1,
-        default_value: 3,
-        min_value: 1,
-        max_value: 5,
-        min_label: 'Easy',
-        max_label: 'Difficult',
-      },
-      {
-        key: 'Camera',
-        name: 'Camera',
-        icon: 'fa fa-camera',
-        label: 'Placeholder Label',
-        field_name: 'camera_',
-      },
+      // {
+      //   key: 'Download',
+      //   name: 'File Attachment',
+      //   icon: 'fa fa-file',
+      //   static: true,
+      //   content: 'Placeholder file name ...',
+      //   field_name: 'download_',
+      //   file_path: '',
+      //   _href: '',
+      // },
+      // {
+      //   key: 'Range',
+      //   name: 'Range',
+      //   icon: 'fa fa-sliders',
+      //   label: 'Placeholder Label',
+      //   field_name: 'range_',
+      //   step: 1,
+      //   default_value: 3,
+      //   min_value: 1,
+      //   max_value: 5,
+      //   min_label: 'Easy',
+      //   max_label: 'Difficult',
+      // },
+      // {
+      //   key: 'Camera',
+      //   name: 'Camera',
+      //   icon: 'fa fa-camera',
+      //   label: 'Placeholder Label',
+      //   field_name: 'camera_',
+      // },
     ];
   }
 
-  create(item) {
+  create = item => {
     const elementOptions = {
       id: ID.uuid(),
       element: item.key,
@@ -271,6 +280,13 @@ export default class Toolbar extends React.Component {
       elementOptions.max_label = item.max_label;
     }
 
+    console.log(this);
+    console.log(item);
+
+    if (item.key === 'Attributes' && this.props.attributes) {
+      elementOptions.attributes = this.props.attributes;
+    }
+
     if (item.defaultValue) { elementOptions.defaultValue = item.defaultValue; }
 
     if (item.field_name) { elementOptions.field_name = item.field_name + ID.uuid(); }
@@ -295,7 +311,7 @@ export default class Toolbar extends React.Component {
         <h4>Toolbox</h4>
         <ul>
           {
-            this.state.items.map((item) => (<ToolbarItem data={item} key={item.key} onClick={this._onClick.bind(this, item)} onCreate={this.create} />))
+            this.state.items.map((item) => (<ToolbarItem data={item} key={item.key} onCreate={this.create} />))
           }
         </ul>
       </div>

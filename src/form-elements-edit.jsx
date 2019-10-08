@@ -5,17 +5,89 @@ import {
 } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
+import ColorPic from './ColorPic';
+
 
 import DynamicOptionList from './dynamic-option-list';
 
-const toolbar = {
-  options: ['inline', 'list', 'textAlign', 'fontSize', 'link', 'history'],
+
+const toolbar_options = {
+  options: ['inline', 'fontSize', 'fontFamily', 'textAlign', 'list', 'colorPicker', 'link', 'image'],
   inline: {
     inDropdown: false,
     className: undefined,
-    options: ['bold', 'italic', 'underline', 'superscript', 'subscript'],
+    component: undefined,
+    dropdownClassName: undefined,
+    options: ['bold', 'italic', 'underline', 'strikethrough'],
+    bold: { className: undefined },
+    italic: { className: undefined },
+    underline: { className: undefined },
+    strikethrough: { className: undefined },
+  },
+  blockType: {
+    inDropdown: true,
+    options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Blockquote', 'Code'],
+    className: undefined,
+    component: undefined,
+    dropdownClassName: undefined,
+  },
+  fontSize: {
+    options: [8, 9, 10, 11, 12, 14, 16, 18, 24, 30, 36, 48, 60, 72, 96],
+    className: undefined,
+    component: undefined,
+    dropdownClassName: undefined,
+  },
+  fontFamily: {
+    options: ['Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+    className: undefined,
+    component: undefined,
+    dropdownClassName: undefined,
+  },
+  list: {
+    inDropdown: false,
+    className: undefined,
+    component: undefined,
+    dropdownClassName: undefined,
+    options: ['unordered', 'ordered', 'indent', 'outdent'],
+    unordered: { className: undefined },
+    ordered: { className: undefined },
+    indent: { className: undefined },
+    outdent: { className: undefined },
+  },
+  textAlign: {
+    inDropdown: false,
+    className: undefined,
+    component: undefined,
+    dropdownClassName: undefined,
+    options: ['left', 'center', 'right', 'justify'],
+    left: { className: undefined },
+    center: { className: undefined },
+    right: { className: undefined },
+    justify: { className: undefined },
+  },
+  colorPicker: {
+    className: undefined,
+    component: ColorPic,
+    popupClassName: undefined
+  },
+  image: {
+    className: undefined,
+    component: undefined,
+    popupClassName: undefined,
+    urlEnabled: true,
+    uploadEnabled: true,
+    alignmentEnabled: true,
+    uploadCallback: undefined,
+    previewImage: false,
+    inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+    alt: { present: false, mandatory: false },
+    defaultSize: {
+      height: 'auto',
+      width: 'auto',
+    },
   },
 };
+
 
 export default class FormElementsEdit extends React.Component {
   constructor(props) {
@@ -77,6 +149,8 @@ export default class FormElementsEdit extends React.Component {
   }
 
   render() {
+    console.log("S: ", this.state);
+    
     if (this.state.dirty) {
       this.props.element.dirty = true;
     }
@@ -93,9 +167,9 @@ export default class FormElementsEdit extends React.Component {
     const this_checked_page_break = this.props.element.hasOwnProperty('pageBreakBefore') ? this.props.element.pageBreakBefore : false;
     const this_checked_alternate_form = this.props.element.hasOwnProperty('alternateForm') ? this.props.element.alternateForm : false;
 
-    const {
-      canHavePageBreakBefore, canHaveAlternateForm, canHaveDisplayHorizontal, canHaveOptionCorrect, canHaveOptionValue,
-    } = this.props.element;
+    const {canHaveAlternateForm, canHaveDisplayHorizontal, canHaveOptionCorrect, canHaveOptionValue} = this.props.element;
+
+    const this_custom_attributes = this.props.customAttributes && this.props.customAttributes.length > 0 ? this.props.customAttributes : [];
 
     const this_files = this.props.files.length ? this.props.files : [];
     if (this_files.length < 1 || (this_files.length > 0 && this_files[0].id !== '')) {
@@ -110,6 +184,11 @@ export default class FormElementsEdit extends React.Component {
       editorState = this.convertFromHTML(this.props.element.label);
     }
 
+    console.log('12345');
+    console.log(this.props);
+    console.log(this_custom_attributes);
+    
+
     return (
       <div>
         <div className="clearfix">
@@ -121,7 +200,7 @@ export default class FormElementsEdit extends React.Component {
             <label className="control-label">Text to display:</label>
 
             <Editor
-              toolbar={toolbar}
+              toolbar={toolbar_options}
               defaultEditorState={editorState}
               onBlur={this.updateElement.bind(this)}
               onEditorStateChange={this.onEditorStateChange.bind(this, 0, 'content')} />
@@ -137,6 +216,17 @@ export default class FormElementsEdit extends React.Component {
               })}
             </select>
           </div>
+        }
+
+        { this_custom_attributes.length > 0 ?
+          <div className="form-group">
+            <label className="control-label">Select Attribute</label>
+            <select className="form-control" onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'selected_attribute', 'value')}>
+              {this_custom_attributes.map(attr => <option value={attr.name} key={attr.name}>{attr.name}</option>)}
+            </select>
+          </div>
+          :
+          <React.Fragment />
         }
         { this.props.element.hasOwnProperty('href') &&
           <div className="form-group">
@@ -173,7 +263,7 @@ export default class FormElementsEdit extends React.Component {
           <div className="form-group">
             <label>Display Label</label>
             <Editor
-              toolbar={toolbar}
+              toolbar={toolbar_options}
               defaultEditorState={editorState}
               onBlur={this.updateElement.bind(this)}
               onEditorStateChange={this.onEditorStateChange.bind(this, 0, 'label')} />
@@ -239,30 +329,6 @@ export default class FormElementsEdit extends React.Component {
           : (<div/>)
         }
 
-        {canHavePageBreakBefore &&
-          <div className="form-group">
-            <label className="control-label">Print Options</label>
-            <div className="checkbox">
-              <label>
-                <input type="checkbox" checked={this_checked_page_break} value={true} onChange={this.editElementProp.bind(this, 'pageBreakBefore', 'checked')} />
-                Page Break Before Element?
-              </label>
-            </div>
-          </div>
-        }
-
-        {canHaveAlternateForm &&
-          <div className="form-group">
-            <label className="control-label">Alternate/Signature Page</label>
-            <div className="checkbox">
-              <label>
-                <input type="checkbox" checked={this_checked_alternate_form} value={true} onChange={this.editElementProp.bind(this, 'alternateForm', 'checked')} />
-                Display on alternate/signature Page?
-              </label>
-            </div>
-          </div>
-        }
-
         { this.props.element.hasOwnProperty('step') &&
           <div className="form-group">
             <div className="form-group-range">
@@ -294,23 +360,6 @@ export default class FormElementsEdit extends React.Component {
             <div className="form-group-range">
               <label className="control-label" htmlFor="defaultSelected">Default Selected</label>
               <input id="defaultSelected" type="number" className="form-control" defaultValue={this.props.element.default_value} onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'default_value', 'value')} />
-            </div>
-          </div>
-        }
-        { this.props.element.hasOwnProperty('static') && this.props.element.static &&
-          <div className="form-group">
-            <label className="control-label">Text Style</label>
-            <div className="checkbox">
-              <label>
-                <input type="checkbox" checked={this_checked_bold} value={true} onChange={this.editElementProp.bind(this, 'bold', 'checked')} />
-                Bold
-              </label>
-            </div>
-            <div className="checkbox">
-              <label>
-                <input type="checkbox" checked={this_checked_italic} value={true} onChange={this.editElementProp.bind(this, 'italic', 'checked')} />
-                Italic
-              </label>
             </div>
           </div>
         }

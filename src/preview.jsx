@@ -138,11 +138,37 @@ export default class Preview extends React.Component {
     if (this.props.editMode) { classes += ' is-editing'; }
     const data = this.state.data.filter(x => !!x);
     const items = data.map((item, index) => this.getElement(item, index));
+    
+    let borderColor = '';
+    if (this.props.borderColor) {
+      let { r, g, b, a } = this.props.borderColor;
+      borderColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+    
+    let formColor = '';
+    if (this.props.formColor) {
+      let { r, g, b, a } = this.props.formColor;
+      formColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+
+    const style = {
+      borderWidth: this.props.borderWidth,
+      borderColor,
+      borderStyle: this.props.borderType,
+    };
+
+    if (this.props.background_image_url.length > 0) {
+      style['background'] = `url("${this.props.background_image_url}")`;
+      style['background-repeat'] = 'repeat';
+    } else {
+      style['backgroundColor'] = formColor;
+    }
+
     return (
-      <div className={classes}>
+      <div className={classes} style={style}>
         <div className="edit-form" ref={this.editForm}>
           { this.props.editElement !== null &&
-            <FormElementsEdit showCorrectColumn={this.props.showCorrectColumn} files={this.props.files} manualEditModeOff={this.manualEditModeOff} preview={this} element={this.props.editElement} updateElement={this.updateElement} />
+            <FormElementsEdit customAttributes={this.props.customAttributes} showCorrectColumn={this.props.showCorrectColumn} files={this.props.files} manualEditModeOff={this.manualEditModeOff} preview={this} element={this.props.editElement} updateElement={this.updateElement} />
           }
         </div>
         <div className="Sortable">{items}</div>

@@ -1,14 +1,146 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import DemoBar from './demobar';
 import FormBuilder from './src/index';
 import * as variables from './variables';
-// import { get, post} from './src/stores/requests';
-// Add our stylesheets for the demo.
+import ColorPicker from './src/ColorPicker';
+
 require('./scss/application.scss');
+
 
 const url = '/api/formdata';
 const saveUrl = '/api/formdata';
+
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      backgroundColor: { r: 245, g: 249, b: 250, a: 1 },
+      pageColor: { r: 108, g: 92, b: 231, a: 1 },
+      borderColor: { r: 0, g: 0, b: 0, a: 1 },
+      previewData: [],
+      borderWidth: 1,
+      borderType: 'solid',
+      background_image_url: ''
+    };
+  }
+
+  onPost = (data) => {
+    console.log('onPost', saveUrl, data);
+    this.setState({ previewData: data.task_data });
+  };
+
+  render() {
+    console.log('state change: ', this.state);
+    let { r, g, b, a } = this.state.pageColor;
+    let bgColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+    const style = {width: '100%', display: 'flex', justifyContent: 'center', background: bgColor, margin: 0, padding: 0, paddingBottom: 100};
+    return (
+      <div className="form-builder-container" style={style}>
+        <div className="form-builder">
+          {/* <h1>Preview</h1>
+          <FormBuilder.ReactFormGenerator
+            form_action="/path/to/form/submit"
+            form_method="POST"
+            data={this.state.previewData}
+          /> */}
+          <h1 style={{'color': 'white'}}>Change form color</h1>
+          <ColorPicker default={this.state.backgroundColor} onChange={color => this.setState({ backgroundColor: color })} />
+          <ColorPicker default={this.state.borderColor} onChange={color => this.setState({ borderColor: color })} />
+          <input type="number" value={this.state.borderWidth} onChange={e => this.setState({borderWidth: e.target.value})} />
+          <input type="url" value={this.state.background_image_url} onChange={e => this.setState({background_image_url: e.target.value})} />
+          <select selected={this.state.borderType} onChange={e => this.setState({borderType: e.target.value})} >
+            <option value="solid">Solid</option>
+            <option value="dotted">Dotted</option>
+            <option value="dashed">Dashed</option>
+          </select>
+          <h1 style={{'color': 'white'}}>Change background color</h1>
+          <ColorPicker default={this.state.pageColor} onChange={color => this.setState({ pageColor: color })} />
+          <hr />
+          <br />
+          <FormBuilder.ReactFormBuilder
+            variables={variables}
+            formColor={this.state.backgroundColor}
+            borderColor={this.state.borderColor}
+            borderWidth={this.state.borderWidth}
+            borderType={this.state.borderType}
+            background_image_url={this.state.background_image_url}
+            customAttributes={[
+              { type: 'string', name: 'first_name' },
+              { type: 'string', name: 'last_name' },
+            ]}
+            url={url}
+            saveUrl={saveUrl}
+            onPost={this.onPost}
+          />
+        </div>
+      </div>
+    )
+  }
+}
+
+
+
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('abhi'),
+);
+
+
+
+// ReactDOM.render(
+//   <DemoBar variables={variables} />,
+//   document.getElementById('demo-bar'),
+// );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ReactDOM.render(
+//   <FormBuilder.ReactFormBuilder variables={variables}
+//     onLoad={onLoad}
+//     onPost={onPost}
+//   />,
+//   document.getElementById('form-builder')
+// )
+
+// ReactDOM.render(
+//   ,
+//   document.getElementById('preview'),
+// );
+
 
 // const content = [
 //   {
@@ -140,23 +272,41 @@ const saveUrl = '/api/formdata';
 //   },
 // ];
 
-ReactDOM.render(
-  <FormBuilder.ReactFormBuilder variables={variables}
-    url={url}
-    saveUrl={saveUrl}
-  />,
-  document.getElementById('form-builder'),
-);
-
-// ReactDOM.render(
-//   <FormBuilder.ReactFormBuilder variables={variables}
-//     onLoad={onLoad}
-//     onPost={onPost}
-//   />,
-//   document.getElementById('form-builder')
-// )
-
-ReactDOM.render(
-  <DemoBar variables={variables} />,
-  document.getElementById('demo-bar'),
-);
+let previewData = [
+  { bold: false,
+    canHaveAlternateForm: true,
+    canHaveDisplayHorizontal: true,
+    canHaveOptionCorrect: true,
+    canHaveOptionValue: true,
+    canHavePageBreakBefore: true,
+    content: "Hello World ",
+    dirty: false,
+    element: "Header",
+    id: "6CE8CAC0-AF86-4CE6-ABC3-A7AD6EA4FDA0",
+    italic: false,
+    required: false,
+    static: true,
+    text: "Header Text"
+  },
+  // {
+  //   canHaveAlternateForm: true,
+  //   canHaveAnswer: true,
+  //   canHaveDisplayHorizontal: true,
+  //   canHaveOptionCorrect: true,
+  //   canHaveOptionValue: true,
+  //   canHavePageBreakBefore: true,
+  //   dirty: false,
+  //   element: "Dropdown",
+  //   field_name: "dropdown_B8E939E0-A25B-43E9-8EBF-6FD72A0EA348",
+  //   id: "E532D5A7-7C5E-4950-B652-558C37021655",
+  //   label: "Placeholder Labela ",
+  //   options: [
+  //     {key: "dropdown_option_572CFCAF-7ED2-4990-96D1-7EEE50E20FBB",
+  //     text: "Place holder option 1",
+  //     value: "place_holder_option_1"}
+  //   ],
+  //   required: false,
+  //   static: undefined,
+  //   text: "Dropdown"
+  // }
+];

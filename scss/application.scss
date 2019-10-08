@@ -11,3 +11,11 @@
 // Form builder styles
 @import "form-builder";
 @import "form-builder-form";
+
+.form-builder-container {
+	width: '100%';
+	display: 'flex';
+	justify-content: 'center';
+	margin: 0;
+	padding: 0;
+}
