@@ -37,6 +37,8 @@ export default class extends React.Component {
           background: `rgba(${this.state.color.r}, ${this.state.color.g}, ${this.state.color.b}, ${this.state.color.a})`,
         },
         swatch: {
+          marginTop: '3px',
+          marginLeft: '5px',
           padding: '5px',
           background: '#fff',
           borderRadius: '1px',

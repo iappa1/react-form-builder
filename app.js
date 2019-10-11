@@ -4,12 +4,264 @@ import DemoBar from './demobar';
 import FormBuilder from './src/index';
 import * as variables from './variables';
 import ColorPicker from './src/ColorPicker';
+import RenderPreview from './RenderPreview';
 
 require('./scss/application.scss');
 
 
 const url = '/api/formdata';
 const saveUrl = '/api/formdata';
+
+const display_data = {
+  "form": {
+    "borderStyle": "dotted",
+    "borderColor": "#f00",
+    "borderWidth": 10,
+    "form-color": "#ff0",
+    "backgroundColor": "#0f0",
+    "width": 500
+  },
+  "submitStyle": {
+	color: 'teal',
+	background: 'purple',
+	size: 30,
+	alignment: 'right',
+	borderRadius: 50,
+	bold: true,
+	italic: true,
+	underline: true
+  },
+	"task_data": [{
+		"id": "445E3CBB-54A5-4690-8591-BB106506D70D",
+		"element": "Header",
+		"text": "Heading",
+		"static": true,
+		"required": false,
+		"bold": false,
+		"italic": false,
+		"content": "<p style=\"text-align:center;\"><span style=\"color: #ff6b00;font-size: 60px;font-family: Tahoma;\">Signup</span></u></em></strong>",
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"dirty": false
+	}, {
+		"id": "BFF95D18-EAC1-43FD-8B3D-62E639A0C922",
+		"element": "LineBreak",
+		"text": "Line Break",
+		"static": true,
+		"required": false,
+		"bold": false,
+		"italic": false,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true
+	}, {
+		"id": "855EDB09-79C8-4AC8-8F4A-3B5D9AC243B7",
+		"element": "Attributes",
+		"text": "Attribute",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "attribute_input_42F447BC-8A29-412A-9EA7-7E3FF1340AEB",
+		"label": "First Name ",
+		"dirty": false,
+		"selected_attribute": "First Name",
+		"configuration": {
+			"type": "text",
+			"name": "First Name",
+			"default_value": "",
+			"tag": "fname",
+			"null_supported": false
+		}
+	}, {
+		"id": "E157B61D-F5B9-4300-A679-D5C5F4727097",
+		"element": "Attributes",
+		"text": "Attribute",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "attribute_input_2694A645-79FC-4D84-8487-67FF1EA2A791",
+		"label": "Last Name ",
+		"selected_attribute": "Last Name",
+		"configuration": {
+			"type": "text",
+			"name": "Last Name",
+			"default_value": "",
+			"tag": "lname",
+			"null_supported": true
+		},
+		"dirty": false
+	}, {
+		"id": "F922A666-120D-41F6-A6BA-6134FDC195A0",
+		"element": "Attributes",
+		"text": "Attribute",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "attribute_input_3920FBFA-07BD-43EF-BBE4-80F749B91774",
+		"label": "Age ",
+		"selected_attribute": "Age",
+		"configuration": {
+			"type": "number",
+			"name": "Age",
+			"default_value": "",
+			"tag": "age",
+			"null_supported": true
+		},
+		"dirty": false
+	},
+	{
+		"id": "D03BE33A-570E-4166-8185-D7734D9564C4",
+		"element": "Attributes",
+		"text": "Attribute",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "attribute_input_527A24EF-B573-4881-8DAF-D8F6C081F321",
+		"label": "Date of birth ",
+		"selected_attribute": "DOB",
+		"configuration": {
+			"type": "date",
+			"name": "DOB",
+			"default_value": "",
+			"tag": "dob",
+			"null_supported": true
+		},
+		"dirty": false
+	},
+	{
+		"id": "1D9C7D45-8C4B-4BCD-A3B8-7B69E5E54994",
+		"element": "Attributes",
+		"text": "Attribute",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "attribute_input_75DCA71E-F0F9-4186-8C8C-CB6CEA7D63A3",
+		"label": "Email ",
+		"selected_attribute": "Email",
+		"configuration": {
+			"type": "email",
+			"name": "Email",
+			"default_value": "",
+			"tag": "email",
+			"null_supported": false
+		},
+		"dirty": false
+	}, {
+		"id": "699E7E1E-9FB1-4044-BC6A-DA816CEB5AD2",
+		"element": "Attributes",
+		"text": "Attribute",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHavePageBreakBefore": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "attribute_input_46419EB9-82FA-435E-BE71-092BD607D203",
+		"label": "Phone number ",
+		"selected_attribute": "Phone",
+		"configuration": {
+			"type": "phone",
+			"name": "Phone",
+			"default_value": "1234567890",
+			"tag": "phone",
+			"null_supported": true
+		},
+		"dirty": false
+	}, {
+		"id": "B75B865C-340B-4E03-95C6-64C266B38B10",
+		"element": "Attributes",
+		"text": "Attributes",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"field_name": "radiobuttons_48189D48-681E-4C91-9702-92AC99A70196",
+		"label": "SElect ",
+		"options": [{
+			"value": true,
+			"text": "yes",
+			"key": "radiobuttons_option_BDC484F8-48A3-4CFE-AE5D-10C6624E119E"
+		}, {
+			"value": false,
+			"text": "no",
+			"key": "radiobuttons_option_C734D19A-C24C-4B70-AB25-EB4B9C0661FA"
+		}],
+		"selected_attribute": "Eligible",
+		"configuration": {
+			"type": "boolean",
+			"name": "Eligible",
+			"default_value": false,
+			"tag": "el",
+			"null_supported": true
+		},
+		"dirty": false
+	}, {
+		"id": "CE5D5EDD-D358-426F-A3AC-6CEF61386A62",
+		"element": "List",
+		"text": "list",
+		"required": true,
+		"canHaveAnswer": true,
+		"canHaveAlternateForm": true,
+		"canHaveDisplayHorizontal": true,
+		"canHaveOptionCorrect": true,
+		"canHaveOptionValue": true,
+		"lists": [{
+			"list_id": 11,
+			"list_name": "first list"
+		}, {
+			"list_id": 21,
+			"list_name": "second list"
+		}, {
+			"list_id": 31,
+			"list_name": "third list"
+		}],
+		"selected_lists": ["11", "21", "31"],
+		"options": [{
+			"value": "11",
+			"text": "first list",
+			"key": "radiobuttons_option_1"
+		}, {
+			"value": "21",
+			"text": "second list",
+			"key": "radiobuttons_option_2"
+		}, {
+			"value": "31",
+			"text": "third list",
+			"key": "radiobuttons_option_3"
+		}],
+		"field_name": "list_input_4A31E042-5273-43A6-940B-CEC6F6CCE242",
+		"label": "<strong><span style=\"color: #ff8228;font-size: 36px;font-family: Times New Roman;\">Select the list</span></strong> ",
+		"dirty": false
+	}]
+}
 
 
 export default class App extends Component {
@@ -22,12 +274,23 @@ export default class App extends Component {
       previewData: [],
       borderWidth: 1,
       borderType: 'solid',
-      background_image_url: ''
+	  background_image_url: '',
+	  submitStyle: {
+		color: 'teal',
+		background: 'purple',
+		size: 30,
+		alignment: 'right',
+		borderRadius: 50,
+		bold: true,
+		italic: true,
+		underline: true
+	  }
     };
   }
 
   onPost = (data) => {
     console.log('onPost', saveUrl, data);
+    console.log(JSON.stringify(data));
     this.setState({ previewData: data.task_data });
   };
 
@@ -39,12 +302,18 @@ export default class App extends Component {
     return (
       <div className="form-builder-container" style={style}>
         <div className="form-builder">
-          {/* <h1>Preview</h1>
-          <FormBuilder.ReactFormGenerator
+          <h1>Preview</h1>
+          {/* <FormBuilder.ReactFormGenerator
             form_action="/path/to/form/submit"
             form_method="POST"
-            data={this.state.previewData}
+            data={display_data.task_data}
           /> */}
+          {/* <RenderPreview
+            data={display_data}
+          /> */}
+          <div className="spacee" />
+          <iframe className="fframe" width="540" height="500" src="https://sibforms.com/serve/MUIEALx_TJv03EqqO8jBu2utszFpcqvbijfefZSdC7qEpQ-yFt--Wu7qFJzuujYVoicjpizQLNos5NnfqI_yRcBv6rup8Ae1XWbdgrPLgYeXFkjED4CMDRD4uTgWgmjcC1XWuOrVgrzgA1bWlTOlMBtFKQPlaagdosnIGOrftGUsRgjYhPEgpe2e9i-J7N-ghWwow92E87PldY5O" frameborder="0" scrolling="auto" allowfullscreen></iframe>
+          <div className="spacee" />
           <h1 style={{'color': 'white'}}>Change form color</h1>
           <ColorPicker default={this.state.backgroundColor} onChange={color => this.setState({ backgroundColor: color })} />
           <ColorPicker default={this.state.borderColor} onChange={color => this.setState({ borderColor: color })} />
@@ -60,15 +329,27 @@ export default class App extends Component {
           <hr />
           <br />
           <FormBuilder.ReactFormBuilder
-            variables={variables}
+			// variables={variables}
+			data={display_data.task_data}
+			submitButton={this.state.submitStyle}
             formColor={this.state.backgroundColor}
             borderColor={this.state.borderColor}
             borderWidth={this.state.borderWidth}
             borderType={this.state.borderType}
-            background_image_url={this.state.background_image_url}
+			background_image_url={this.state.background_image_url}
+			lists={[
+				{list_id: 1, list_name: "first list"},
+				{list_id: 2, list_name: "second list"},
+				{list_id: 3, list_name: "third list"}
+			]}
             customAttributes={[
-              { type: 'string', name: 'first_name' },
-              { type: 'string', name: 'last_name' },
+              { type: 'text', name: 'First Name', default_value: '', tag: 'fname', null_supported: false },
+              { type: 'text', name: 'Last Name', default_value: '', tag: 'lname', null_supported: true },
+              { type: 'number', name: 'Age', default_value: '', tag: 'age', null_supported: true },
+              { type: 'date', name: 'DOB', default_value: '', tag: 'dob', null_supported: true },
+              { type: 'email', name: 'Email', default_value: '', tag: 'email', null_supported: false },
+              { type: 'phone', name: 'Phone', default_value: '', tag: 'phone', null_supported: true },
+              { type: 'boolean', name: 'Eligible', default_value: false, tag: 'elg', null_supported: true },
             ]}
             url={url}
             saveUrl={saveUrl}

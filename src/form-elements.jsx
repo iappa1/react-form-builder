@@ -8,6 +8,8 @@ import ReactDatePicker from 'react-datepicker';
 import StarRating from './star-rating';
 import HeaderBar from './header-bar';
 
+
+
 const FormElements = {};
 const myxss = new xss.FilterXSS({
   whiteList: {
@@ -157,38 +159,134 @@ class TextInput extends React.Component {
   }
 }
 
-class Attributes extends React.Component {
+class Lists extends React.Component {
   constructor(props) {
     super(props);
-    this.inputField = React.createRef();
+    this.options = {};
   }
 
   render() {
-    const props = {};
-    props.type = 'attributes';
-    props.className = 'form-control';
-    props.name = this.props.data.field_name;
-    if (this.props.mutable) {
-      props.defaultValue = this.props.defaultValue;
-      props.ref = this.inputField;
-    }
+    const self = this;
+    let classNames = 'checkbox-label';
+    if (this.props.data.inline) { classNames += ' option-inline'; }
 
     let baseClasses = 'SortableItem rfb-item';
     if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
-
-    if (this.props.read_only) {
-      props.disabled = 'disabled';
-    }
 
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
         <div className="form-group">
-          <ComponentLabel {...this.props} />
-          <input {...props} />
+          <ComponentLabel className="form-label" {...this.props} />
+          {this.props.data.options.map((option) => {
+            const this_key = `preview_${option.key}`;
+            const props = {};
+            props.name = `option_${option.key}`;
+
+            props.type = 'checkbox';
+            props.value = option.value;
+            if (self.props.mutable) {
+              props.defaultChecked = self.props.defaultValue !== undefined && self.props.defaultValue.indexOf(option.key) > -1;
+            }
+            if (this.props.read_only) {
+              props.disabled = 'disabled';
+            }
+            return (
+              <label className={classNames} key={this_key}>
+                <input ref={c => {
+                  if (c && self.props.mutable) {
+                    self.options[`child_ref_${option.key}`] = c;
+                  }
+                } } {...props} /> {option.text}
+              </label>
+            );
+          })}
         </div>
       </div>
     );
+  }
+}
+
+class Attributes extends React.Component {
+  constructor(props) {
+    super(props);
+    this.options = {};
+    this.inputField = React.createRef();
+  }
+
+  render() {
+    console.log("^^^^^^^^^^^^^^^^^^^^^attr");
+    console.log(this.props);
+
+    if (this.props.data && this.props.data.configuration && this.props.data.configuration.type === "boolean") {
+      
+      let classNames = 'radio-label';
+      if (this.props.data.inline) { classNames += ' option-inline'; }
+
+      let baseClasses = 'SortableItem rfb-item';
+      if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+
+      return (
+        <div className={baseClasses}>
+          <ComponentHeader {...this.props} />
+          <div className="form-group">
+            <ComponentLabel className="form-label" {...this.props} />
+            {this.props.data.options.map((option) => {
+              const this_key = `preview_${option.key}`;
+              const props = {};
+              props.name = this.props.data.field_name;
+  
+              props.type = 'radio';
+              props.value = option.value;
+              if (this.props.mutable) {
+                props.defaultChecked = this.props.defaultValue;
+              }
+              if (this.props.read_only) {
+                props.disabled = 'disabled';
+              }
+  
+              return (
+                <label className={classNames} key={this_key}>
+                  <input ref={c => {
+                    if (c && this.props.mutable) {
+                      this.options[`child_ref_${option.key}`] = c;
+                    }
+                  } } {...props} /> {option.text}
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      );
+    } else {
+
+      const props = {};
+      props.type = 'attributes';
+      props.className = 'form-control';
+      props.name = this.props.data.field_name;
+      if (this.props.mutable) {
+        props.defaultValue = this.props.defaultValue;
+        props.ref = this.inputField;
+      }
+  
+      let baseClasses = 'SortableItem rfb-item';
+      if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+  
+      if (this.props.read_only) {
+        props.disabled = 'disabled';
+      }
+  
+      return (
+        <div className={baseClasses}>
+          <ComponentHeader {...this.props} />
+          <div className="form-group">
+            <ComponentLabel {...this.props} />
+            <input {...props} />
+          </div>
+        </div>
+      );
+      
+    }
   }
 }
 
@@ -203,6 +301,116 @@ class NumberInput extends React.Component {
     props.type = 'number';
     props.className = 'form-control';
     props.name = this.props.data.field_name;
+
+    if (this.props.mutable) {
+      props.defaultValue = this.props.defaultValue;
+      props.ref = this.inputField;
+    }
+
+    if (this.props.read_only) {
+      props.disabled = 'disabled';
+    }
+
+    let baseClasses = 'SortableItem rfb-item';
+    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+
+    return (
+      <div className={baseClasses}>
+        <ComponentHeader {...this.props} />
+        <div className="form-group">
+          <ComponentLabel {...this.props} />
+          <input {...props} />
+        </div>
+      </div>
+    );
+  }
+}
+
+class EmailInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputField = React.createRef();
+  }
+
+  render() {
+    const props = {};
+    props.type = 'email';
+    props.className = 'form-control';
+    props.name = this.props.data.field_name;
+
+    if (this.props.mutable) {
+      props.defaultValue = this.props.defaultValue;
+      props.ref = this.inputField;
+    }
+
+    if (this.props.read_only) {
+      props.disabled = 'disabled';
+    }
+
+    let baseClasses = 'SortableItem rfb-item';
+    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+
+    return (
+      <div className={baseClasses}>
+        <ComponentHeader {...this.props} />
+        <div className="form-group">
+          <ComponentLabel {...this.props} />
+          <input {...props} />
+        </div>
+      </div>
+    );
+  }
+}
+
+class PhoneInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputField = React.createRef();
+  }
+
+  render() {
+    const props = {};
+    props.type = 'tel';
+    props.className = 'form-control';
+    props.name = this.props.data.field_name;
+
+    if (this.props.mutable) {
+      props.defaultValue = this.props.defaultValue;
+      props.ref = this.inputField;
+    }
+
+    if (this.props.read_only) {
+      props.disabled = 'disabled';
+    }
+
+    let baseClasses = 'SortableItem rfb-item';
+    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+
+    return (
+      <div className={baseClasses}>
+        <ComponentHeader {...this.props} />
+        <div className="form-group">
+          <ComponentLabel {...this.props} />
+          <input {...props} />
+        </div>
+      </div>
+    );
+  }
+}
+
+class DateInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inputField = React.createRef();
+  }
+
+  render() {
+    const props = {};
+    props.type = 'date';
+    props.className = 'form-control custom-date-input';
+    props.name = this.props.data.field_name;
+    props.min = "1901-01-01";
+    props.max = "2099-12-31";
 
     if (this.props.mutable) {
       props.defaultValue = this.props.defaultValue;
@@ -635,8 +843,7 @@ class RadioButtons extends React.Component {
             props.type = 'radio';
             props.value = option.value;
             if (self.props.mutable) {
-              props.defaultChecked = (self.props.defaultValue !== undefined &&
-                (self.props.defaultValue.indexOf(option.key) > -1 || self.props.defaultValue.indexOf(option.value) > -1));
+              props.defaultChecked = self.props.defaultValue;
             }
             if (this.props.read_only) {
               props.disabled = 'disabled';
@@ -910,7 +1117,11 @@ FormElements.Label = Label;
 FormElements.LineBreak = LineBreak;
 FormElements.TextInput = TextInput;
 FormElements.Attributes = Attributes;
+FormElements.Lists = Lists;
 FormElements.NumberInput = NumberInput;
+FormElements.EmailInput = EmailInput;
+FormElements.PhoneInput = PhoneInput;
+FormElements.DateInput = DateInput;
 FormElements.TextArea = TextArea;
 FormElements.Dropdown = Dropdown;
 FormElements.Signature = Signature;

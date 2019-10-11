@@ -163,16 +163,61 @@ export default class Preview extends React.Component {
     } else {
       style['backgroundColor'] = formColor;
     }
+    
+    /**
+     * color: 'white',
+		background: 'red',
+		size: 30,
+		alignment: 'center',
+		borderRadius: 10,
+		bold: false,
+		italic: false,
+		underline: false
+     */
+
+    const {color, background, borderRadius} = this.props.submitButton;
+    
+    const toolbarStyle = {display: 'flex'};
+
+    const submitStyle = {
+      color,
+      background,
+      borderRadius,
+      fontSize: this.props.submitButton.size
+    }
+
+    if (this.props.submitButton.alignment === "left") {
+      submitStyle.marginRight = 'auto';
+    } else if (this.props.submitButton.alignment === "right") {
+      submitStyle.marginLeft = 'auto';
+    } else {
+      submitStyle.margin = '15px auto 0 auto';
+    }
+
+    if (this.props.submitButton.bold) {
+      submitStyle.fontWeight = 'bold';
+    }
+    
+    if (this.props.submitButton.italic) {
+      submitStyle.fontStyle = 'italic';
+    }
+    
+    if (this.props.submitButton.underline) {
+      submitStyle.textDecoration = 'underline';
+    }
 
     return (
       <div className={classes} style={style}>
         <div className="edit-form" ref={this.editForm}>
           { this.props.editElement !== null &&
-            <FormElementsEdit customAttributes={this.props.customAttributes} showCorrectColumn={this.props.showCorrectColumn} files={this.props.files} manualEditModeOff={this.manualEditModeOff} preview={this} element={this.props.editElement} updateElement={this.updateElement} />
+            <FormElementsEdit lists={this.props.lists} customAttributes={this.props.customAttributes} showCorrectColumn={this.props.showCorrectColumn} files={this.props.files} manualEditModeOff={this.manualEditModeOff} preview={this} element={this.props.editElement} updateElement={this.updateElement} />
           }
         </div>
         <div className="Sortable">{items}</div>
          <PlaceHolder id="form-place-holder" show={items.length === 0} index={items.length} moveCard={this.cardPlaceHolder} insertCard={this.insertCard}/>
+         <div style={toolbarStyle}>
+          <input type='submit' style={submitStyle} className='btn btn-school btn-big btn-agree' />
+         </div>
       </div>
     );
   }

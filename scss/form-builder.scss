@@ -7,7 +7,7 @@
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 30px rgba(0,0,0,0.25);
-    min-height: 750px;
+    min-height: 310px;
 
     .preview-page-break {
       padding: 5px 0;
@@ -142,7 +142,7 @@
       -ms-user-select: none;
       user-select: none;
       .rfb-item {
-        padding: 10px 20px;
+        padding: 2px 20px;
         border-radius: 10px;
         transition-duration: 0.1s;
         &.SortableItem {
@@ -192,6 +192,21 @@
           .toolbar-header-buttons {
             position: absolute;
             right: 20px;
+
+            .btn {
+              margin-left: 10px;
+              transition-duration: 0.25s;
+              border: 1px solid white !important;
+              background-color: rgba(255, 255, 255, 0.9) !important;
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+
+              &:hover {
+                border: 1px solid white !important;
+                background-color: white !important;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+              }
+            }
+
           }
         }
         &:hover {
@@ -204,6 +219,14 @@
           .toolbar-header {
             opacity: 1;
           }
+        }
+
+        p span, label span {
+          background: transparent;
+        }
+
+        .label-danger {
+          background-color: rgb(226, 81, 81);
         }
       }
     }
@@ -224,9 +247,9 @@
   }
 
   .react-form-builder-toolbar {
-    width: 250px;
-    background: #fff;
-    margin-top: -30px;
+    width: 200px;
+    // background: #fff;
+    // margin-top: -30px;
 
     h4 {
       margin-top: 0;
@@ -238,14 +261,38 @@
     }
     ul {
       padding: 0;
+      margin-bottom: 0;
       li {
+        display: flex;
+        align-items: center;
         cursor: pointer;
         list-style: none;
-        margin: 5px;
-        padding: 10px;
-        border: 1px dashed #ddd;
+        margin: 0 0 5px 0;
+        padding: 5px 10px;
+        // border: 1px dashed #ddd;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        transition-duration: 0.15s;
+
         i {
-          margin: 0 15px 0 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 30px;
+          width: 30px;
+          border-radius: 20px;
+          background-color: #eee;
+          color: #333;
+          margin: 0 10px 0 5px;
+        }
+
+        &:hover {
+          background-color: #fff;
+          box-shadow: 0 5px 20px rgba(0,0,0,0.25);
         }
       }
     }
@@ -310,6 +357,7 @@
         }
       }
     }
+    
 
     .react-form-builder-toolbar {
 
@@ -416,4 +464,11 @@
   text-align:center;
   font: 16px bold,"Arial";
   color:#aaa;
+}
+
+
+.form-control.custom-date-input {
+  padding-left: 5px;
+  max-height: 34px;
+  width: 100%;
 }

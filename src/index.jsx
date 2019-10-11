@@ -40,9 +40,12 @@ class ReactFormBuilder extends React.Component {
   }
 
   render() {
+    console.log(this.props);
+    
     const toolbarProps = {};
     if (this.props.toolbarItems) { toolbarProps.items = this.props.toolbarItems; }
     if (this.props.customAttributes) { toolbarProps.customAttributes = this.props.customAttributes; }
+    if (this.props.lists) { toolbarProps.lists = this.props.lists; }
     return (
        <div className="phion-builder">
          {/* <div>
@@ -57,6 +60,8 @@ class ReactFormBuilder extends React.Component {
            <div>
              <Preview files={this.props.files}
                  customAttributes={this.props.customAttributes}
+                 submitButton={this.props.submitButton}
+                 lists={this.props.lists}
                  formColor={this.props.formColor}
                  borderWidth={this.props.borderWidth}
                  borderColor={this.props.borderColor}

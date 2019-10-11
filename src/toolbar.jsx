@@ -52,9 +52,18 @@ export default class Toolbar extends React.Component {
   _defaultItems() {
     return [
       {
+        key: 'List',
+        canHaveAnswer: true,
+        name: 'list',
+        label: 'List Selection',
+        icon: 'fa fa-address-card-o',
+        field_name: 'list_input_',
+        selected_lists: [],
+      },
+      {
         key: 'Attributes',
         canHaveAnswer: true,
-        name: 'Custom Attribute',
+        name: 'Attribute',
         label: 'Custom Attribute',
         icon: 'fa fa-address-card-o',
         field_name: 'attribute_input_',
@@ -62,14 +71,14 @@ export default class Toolbar extends React.Component {
       },
       {
         key: 'Header',
-        name: 'Header Text',
+        name: 'Heading',
         icon: 'fa fa-header',
         static: true,
         content: 'Placeholder Text...',
       },
       {
         key: 'Label',
-        name: 'Label',
+        name: 'Text',
         static: true,
         icon: 'fa fa-font',
         content: 'Placeholder Text...',
@@ -87,15 +96,15 @@ export default class Toolbar extends React.Component {
         static: true,
         icon: 'fa fa-arrows-h',
       },
-      {
-        key: 'Dropdown',
-        canHaveAnswer: true,
-        name: 'Dropdown',
-        icon: 'fa fa-caret-square-o-down',
-        label: 'Placeholder Label',
-        field_name: 'dropdown_',
-        options: [],
-      },
+      // {
+      //   key: 'Dropdown',
+      //   canHaveAnswer: true,
+      //   name: 'Dropdown',
+      //   icon: 'fa fa-caret-square-o-down',
+      //   label: 'Placeholder Label',
+      //   field_name: 'dropdown_',
+      //   options: [],
+      // },
       // {
       //   key: 'Tags',
       //   canHaveAnswer: true,
@@ -105,48 +114,48 @@ export default class Toolbar extends React.Component {
       //   field_name: 'tags_',
       //   options: [],
       // },
-      {
-        key: 'Checkboxes',
-        canHaveAnswer: true,
-        name: 'Checkboxes',
-        icon: 'fa fa-check-square-o',
-        label: 'Placeholder Label',
-        field_name: 'checkboxes_',
-        options: [],
-      },
-      {
-        key: 'RadioButtons',
-        canHaveAnswer: true,
-        name: 'Multiple Choice',
-        icon: 'fa fa-dot-circle-o',
-        label: 'Placeholder Label',
-        field_name: 'radiobuttons_',
-        options: [],
-      },
-      {
-        key: 'TextInput',
-        canHaveAnswer: true,
-        name: 'Text Input',
-        label: 'Placeholder Label',
-        icon: 'fa fa-font',
-        field_name: 'text_input_',
-      },
-      {
-        key: 'NumberInput',
-        canHaveAnswer: true,
-        name: 'Number Input',
-        label: 'Placeholder Label',
-        icon: 'fa fa-plus',
-        field_name: 'number_input_',
-      },
-      {
-        key: 'TextArea',
-        canHaveAnswer: true,
-        name: 'Multi-line Input',
-        label: 'Placeholder Label',
-        icon: 'fa fa-text-height',
-        field_name: 'text_area_',
-      },
+      // {
+      //   key: 'Checkboxes',
+      //   canHaveAnswer: true,
+      //   name: 'Checkboxes',
+      //   icon: 'fa fa-check-square-o',
+      //   label: 'Placeholder Label',
+      //   field_name: 'checkboxes_',
+      //   options: [],
+      // },
+      // {
+      //   key: 'RadioButtons',
+      //   canHaveAnswer: true,
+      //   name: 'Multiple Choice',
+      //   icon: 'fa fa-dot-circle-o',
+      //   label: 'Placeholder Label',
+      //   field_name: 'radiobuttons_',
+      //   options: [],
+      // },
+      // {
+      //   key: 'TextInput',
+      //   canHaveAnswer: true,
+      //   name: 'Text Input',
+      //   label: 'Placeholder Label',
+      //   icon: 'fa fa-font',
+      //   field_name: 'text_input_',
+      // },
+      // {
+      //   key: 'NumberInput',
+      //   canHaveAnswer: true,
+      //   name: 'Number Input',
+      //   label: 'Placeholder Label',
+      //   icon: 'fa fa-plus',
+      //   field_name: 'number_input_',
+      // },
+      // {
+      //   key: 'TextArea',
+      //   canHaveAnswer: true,
+      //   name: 'Multi-line Input',
+      //   label: 'Placeholder Label',
+      //   icon: 'fa fa-text-height',
+      //   field_name: 'text_area_',
+      // },
       {
         key: 'Image',
         name: 'Image',
@@ -163,19 +172,19 @@ export default class Toolbar extends React.Component {
       //   icon: 'fa fa-star',
       //   field_name: 'rating_',
       // },
-      {
-        key: 'DatePicker',
-        canDefaultToday: true,
-        canReadOnly: true,
-        dateFormat: 'MM/dd/yyyy',
-        timeFormat: 'hh:mm aa',
-        showTimeSelect: false,
-        showTimeSelectOnly: false,
-        name: 'Date',
-        icon: 'fa fa-calendar',
-        label: 'Placeholder Label',
-        field_name: 'date_picker_',
-      },
+      // {
+      //   key: 'DatePicker',
+      //   canDefaultToday: true,
+      //   canReadOnly: true,
+      //   dateFormat: 'MM/dd/yyyy',
+      //   timeFormat: 'hh:mm aa',
+      //   showTimeSelect: false,
+      //   showTimeSelectOnly: false,
+      //   name: 'Date',
+      //   icon: 'fa fa-calendar',
+      //   label: 'Placeholder Label',
+      //   field_name: 'date_picker_',
+      // },
       // {
       //   key: 'Signature',
       //   canReadOnly: true,
@@ -186,7 +195,7 @@ export default class Toolbar extends React.Component {
       // },
       {
         key: 'HyperLink',
-        name: 'Web site',
+        name: 'URL',
         icon: 'fa fa-link',
         static: true,
         content: 'Placeholder Web site link ...',
@@ -249,7 +258,7 @@ export default class Toolbar extends React.Component {
 
     if (item.href) { elementOptions.href = item.href; }
 
-    elementOptions.canHavePageBreakBefore = item.canHavePageBreakBefore !== false;
+    // elementOptions.canHavePageBreakBefore = item.canHavePageBreakBefore !== false;
     elementOptions.canHaveAlternateForm = item.canHaveAlternateForm !== false;
     elementOptions.canHaveDisplayHorizontal = item.canHaveDisplayHorizontal !== false;
     elementOptions.canHaveOptionCorrect = item.canHaveOptionCorrect !== false;
@@ -280,11 +289,15 @@ export default class Toolbar extends React.Component {
       elementOptions.max_label = item.max_label;
     }
 
-    console.log(this);
-    console.log(item);
-
+    if (item.key === "List" && this.props.lists) {
+      elementOptions.lists = this.props.lists;
+      elementOptions.selected_lists = [];
+      elementOptions.options = [];
+    }
+    
     if (item.key === 'Attributes' && this.props.attributes) {
       elementOptions.attributes = this.props.attributes;
+      elementOptions.options = [];
     }
 
     if (item.defaultValue) { elementOptions.defaultValue = item.defaultValue; }
@@ -297,6 +310,7 @@ export default class Toolbar extends React.Component {
       elementOptions.options = Toolbar._defaultItemOptions(elementOptions.element);
     }
 
+    console.log(elementOptions);
     return elementOptions;
   }
 
@@ -308,7 +322,7 @@ export default class Toolbar extends React.Component {
   render() {
     return (
       <div className="react-form-builder-toolbar pull-right">
-        <h4>Toolbox</h4>
+        {/* <h4>Toolbox</h4> */}
         <ul>
           {
             this.state.items.map((item) => (<ToolbarItem data={item} key={item.key} onCreate={this.create} />))

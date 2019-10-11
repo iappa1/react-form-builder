@@ -7,9 +7,10 @@ import ReactDOM from 'react-dom';
 import { EventEmitter } from 'fbemitter';
 import FormValidator from './form-validator';
 import FormElements from './form-elements';
+import moment from "moment"
 
 const {
-  Image, Checkboxes, Signature, Download, Camera,
+  Image, Checkboxes, Signature, Download, Camera, EmailInput
 } = FormElements;
 
 export default class ReactForm extends React.Component {
@@ -64,6 +65,7 @@ export default class ReactForm extends React.Component {
       element: item.element,
       value: '',
     };
+    
     if (item.element === 'Rating') {
       $item.value = ref.inputField.current.state.rating;
     } else if (item.element === 'Tags') {
@@ -72,6 +74,42 @@ export default class ReactForm extends React.Component {
       $item.value = ref.state.value;
     } else if (item.element === 'Camera') {
       $item.value = ref.state.img ? ref.state.img.replace('data:image/png;base64,', '') : '';
+    } else if (item.element === 'Attributes') {
+      
+      if (item.configuration.type === "boolean") {
+        const options = ref.options;
+
+        const keys = Object.keys(options);
+        let selectedIndex = -1;
+        if (options[keys[0]]['checked']) {
+          selectedIndex = 0;
+        } else if (options[keys[1]]['checked']) {
+          selectedIndex = 1;
+        }
+
+        $item.value = selectedIndex === -1 ? '' : item.options[selectedIndex]['value'];
+        
+      } else {
+        $item = ReactDOM.findDOMNode(ref.inputField.current);
+        //   $item.value = moment($item.value.trim()).format('MM/DD/YYYY');
+        if (typeof $item.value === 'string') {
+          $item.value = $item.value.trim();
+        }
+      }
+
+    } else if (item.element === 'List') {
+      
+      const options = ref.options;
+      const selected = []
+
+      for (const opt in options) {
+        if (options[opt]['checked']) {
+          selected.push(options[opt]['value'])
+        }
+      }        
+
+      $item.value = selected;
+
     } else if (ref && ref.inputField) {
       $item = ReactDOM.findDOMNode(ref.inputField.current);
       if (typeof $item.value === 'string') {
@@ -109,6 +147,7 @@ export default class ReactForm extends React.Component {
   _isInvalid(item) {
     let invalid = false;
     if (item.required === true) {
+      
       const ref = this.inputs[item.field_name];
       if (item.element === 'Checkboxes' || item.element === 'RadioButtons') {
         let checked_options = 0;
@@ -126,6 +165,22 @@ export default class ReactForm extends React.Component {
         const $item = this._getItemValue(item, ref);
         if (item.element === 'Rating') {
           if ($item.value === 0) {
+            invalid = true;
+          }
+        } else if ($item.type === 'email') {
+          const rex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          
+          if (!rex.test($item.value.toLowerCase())) {
+            invalid = true;
+          }
+        } else if ($item.type === 'date') {
+          const dash_format = moment($item.value, 'Y-M-D', true).isValid()
+          if (!dash_format) {
+            invalid = true;
+          }
+        } else if ($item.type === 'tel') {
+          const rex = /^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+          if (!rex.test($item.value.toLowerCase())) {
             invalid = true;
           }
         } else if ($item.value === undefined || $item.value.length < 1) {
@@ -207,7 +262,7 @@ export default class ReactForm extends React.Component {
   validateForm() {
     const errors = [];
     let data_items = this.props.data;
-
+    
     if (this.props.display_short) {
       data_items = this.props.data.filter((i) => i.alternateForm === true);
     }
@@ -229,7 +284,7 @@ export default class ReactForm extends React.Component {
     return errors;
   }
 
-  getInputElement(item) {
+  getInputElement(item, value) {
     const Input = FormElements[item.element];
     return (<Input
       handleChange={this.handleChange}
@@ -238,15 +293,55 @@ export default class ReactForm extends React.Component {
       key={`form_${item.id}`}
       data={item}
       read_only={this.props.read_only}
-      defaultValue={this._getDefaultValue(item)} />);
+      // defaultValue={value ? value : this._getDefaultValue(item)}
+    />);
   }
 
-  getSimpleElement(item) {
-    const Element = FormElements[item.element];
-    return (<Element mutable={true} key={`form_${item.id}`} data={item} />);
+  getSimpleElement(item, type) {
+    const Element = FormElements[type];
+    if (item.element === "List") {
+      return (<Element ref={c => this.inputs[item.field_name] = c} mutable={true} key={`form_${item.id}`} data={item} />);
+    } else {
+      return (<Element ref={c => this.inputs[item.field_name] = c} defaultValue={item.configuration.default_value} mutable={true} key={`form_${item.id}`} data={item} />);
+    }
   }
 
   render() {
+    console.log(this.props);
+
+    // submit button style start
+
+    const {color, background, borderRadius} = this.props.submitButton;
+    
+    const submitStyle = {
+      color,
+      background,
+      borderRadius,
+      fontSize: this.props.submitButton.size
+    }
+
+    if (this.props.submitButton.alignment === "left") {
+      submitStyle.marginRight = 'auto';
+    } else if (this.props.submitButton.alignment === "right") {
+      submitStyle.marginLeft = 'auto';
+    } else {
+      submitStyle.margin = '0 auto';
+    }
+
+    if (this.props.submitButton.bold) {
+      submitStyle.fontWeight = 'bold';
+    }
+    
+    if (this.props.submitButton.italic) {
+      submitStyle.fontStyle = 'italic';
+    }
+    
+    if (this.props.submitButton.underline) {
+      submitStyle.textDecoration = 'underline';
+    }
+
+    // submit button style end
+    
     let data_items = this.props.data;
 
     if (this.props.display_short) {
@@ -266,7 +361,7 @@ export default class ReactForm extends React.Component {
         case 'TextArea':
         case 'Dropdown':
         case 'DatePicker':
-        case 'RadioButtons':
+        // case 'RadioButtons':
         case 'Rating':
         case 'Tags':
         case 'Range':
@@ -281,8 +376,33 @@ export default class ReactForm extends React.Component {
           return <Download download_path={this.props.download_path} mutable={true} key={`form_${item.id}`} data={item} />;
         case 'Camera':
           return <Camera ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only || item.readOnly} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
-        default:
-          return this.getSimpleElement(item);
+        case 'List':
+          console.log("inide list");
+          // return <Checkboxes ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only} handleChange={this.handleChange} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._optionsDefaultValue(item)} />;
+          return this.getSimpleElement(item, 'Lists');
+        case 'Attributes':
+            // * text
+            // * number
+            // * date (mm-dd-yyyy | mm/dd/yyyy)
+            // * boolean
+            // * phone
+            // * email
+          if (item.configuration.type === 'text') {
+            return this.getSimpleElement(item, 'TextInput');
+          } else if (item.configuration.type === 'phone') {
+            return this.getSimpleElement(item, 'PhoneInput');
+          } else if (item.configuration.type === 'number') {
+            return this.getSimpleElement(item, 'NumberInput');
+          } else if (item.configuration.type === 'email') {
+            return this.getSimpleElement(item, 'EmailInput');
+          } else if (item.configuration.type === 'date') {
+            return this.getSimpleElement(item, 'DateInput');
+          } else if (item.configuration.type === 'boolean') {
+            return this.getSimpleElement(item, 'RadioButtons');
+          }
+          
+        // default:
+        //   return this.getSimpleElement(item);
       }
     });
 
@@ -292,9 +412,10 @@ export default class ReactForm extends React.Component {
 
     const actionName = (this.props.action_name) ? this.props.action_name : 'Submit';
     const backName = (this.props.back_name) ? this.props.back_name : 'Cancel';
+    const toolbarStyle = {display: 'flex'};
 
     return (
-      <div>
+      <React.Fragment>
         <FormValidator emitter={this.emitter} />
         <div className='react-form-builder-form'>
           <form encType='multipart/form-data' ref={c => this.form = c} action={this.props.form_action} onSubmit={this.handleSubmit.bind(this)} method={this.props.form_method}>
@@ -306,9 +427,9 @@ export default class ReactForm extends React.Component {
               </div>
             }
             {items}
-            <div className='btn-toolbar'>
+            <div className='btn-toolbar' style={toolbarStyle}>
               { !this.props.hide_actions &&
-                <input type='submit' className='btn btn-school btn-big btn-agree' value={actionName} />
+                <input type='submit' style={submitStyle} className='btn btn-school btn-big btn-agree' value={actionName} />
               }
               { !this.props.hide_actions && this.props.back_action &&
                 <a href={this.props.back_action} className='btn btn-default btn-cancel btn-big'>{backName}</a>
@@ -316,7 +437,7 @@ export default class ReactForm extends React.Component {
             </div>
           </form>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

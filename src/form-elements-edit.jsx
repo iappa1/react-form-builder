@@ -12,27 +12,20 @@ import DynamicOptionList from './dynamic-option-list';
 
 
 const toolbar_options = {
-  options: ['inline', 'fontSize', 'fontFamily', 'textAlign', 'list', 'colorPicker', 'link', 'image'],
+  options: ['inline', 'fontSize', 'fontFamily', 'textAlign', 'list', 'colorPicker'],
   inline: {
-    inDropdown: false,
+    inDropdown: true,
     className: undefined,
     component: undefined,
     dropdownClassName: undefined,
-    options: ['bold', 'italic', 'underline', 'strikethrough'],
+    options: ['bold', 'italic', 'underline'],
     bold: { className: undefined },
     italic: { className: undefined },
     underline: { className: undefined },
     strikethrough: { className: undefined },
   },
-  blockType: {
-    inDropdown: true,
-    options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Blockquote', 'Code'],
-    className: undefined,
-    component: undefined,
-    dropdownClassName: undefined,
-  },
   fontSize: {
-    options: [8, 9, 10, 11, 12, 14, 16, 18, 24, 30, 36, 48, 60, 72, 96],
+    options: [8, 10, 11, 12, 14, 16, 18, 24, 30, 36, 48, 60, 72],
     className: undefined,
     component: undefined,
     dropdownClassName: undefined,
@@ -48,11 +41,9 @@ const toolbar_options = {
     className: undefined,
     component: undefined,
     dropdownClassName: undefined,
-    options: ['unordered', 'ordered', 'indent', 'outdent'],
+    options: ['unordered', 'ordered'],
     unordered: { className: undefined },
     ordered: { className: undefined },
-    indent: { className: undefined },
-    outdent: { className: undefined },
   },
   textAlign: {
     inDropdown: false,
@@ -69,22 +60,6 @@ const toolbar_options = {
     className: undefined,
     component: ColorPic,
     popupClassName: undefined
-  },
-  image: {
-    className: undefined,
-    component: undefined,
-    popupClassName: undefined,
-    urlEnabled: true,
-    uploadEnabled: true,
-    alignmentEnabled: true,
-    uploadCallback: undefined,
-    previewImage: false,
-    inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
-    alt: { present: false, mandatory: false },
-    defaultSize: {
-      height: 'auto',
-      width: 'auto',
-    },
   },
 };
 
@@ -104,10 +79,52 @@ export default class FormElementsEdit extends React.Component {
   }
 
   editElementProp(elemProperty, targProperty, e) {
+
     // elemProperty could be content or label
     // targProperty could be value or checked
     const this_element = this.state.element;
-    this_element[elemProperty] = e.target[targProperty];
+
+    if (elemProperty !== 'selected_lists') {
+      this_element[elemProperty] = e.target[targProperty];
+    }
+
+    if (elemProperty === 'selected_attribute') {
+      const conf = this.props.customAttributes.find(o => o.name === e.target.value);
+      this_element.configuration = conf;
+
+      if (this_element.configuration.type === "boolean") {
+        this_element.options = [{
+          "value": true,
+          "text": "yes",
+          "key": "radiobuttons_option_1"
+        }, {
+          "value": false,
+          "text": "no",
+          "key": "radiobuttons_option_2"
+        }]
+      }
+      // this_element.label = e.target.value;
+
+      if (!conf.null_supported) {
+        this_element.required = true;
+      } else {
+        this_element.required = false;
+      }
+
+    } else if (elemProperty === 'selected_lists') {
+      
+      if (e.target.checked) {
+        this_element.options.push({
+          value: e.target.value,
+          text: e.target.name,
+          key: `radiobuttons_option_${e.target.value}`
+        })
+        this_element.selected_lists.push(e.target.value)
+      } else {
+        this_element.options = this_element.options.filter(arrayItem => arrayItem.value !== e.target.value);
+        this_element.selected_lists = this_element.selected_lists.filter(arrayItem => arrayItem !== e.target.value);
+      }
+    }
 
     this.setState({
       element: this_element,
@@ -115,6 +132,7 @@ export default class FormElementsEdit extends React.Component {
     }, () => {
       if (targProperty === 'checked') { this.updateElement(); }
     });
+
   }
 
   onEditorStateChange(index, property, editorContent) {
@@ -170,6 +188,7 @@ export default class FormElementsEdit extends React.Component {
     const {canHaveAlternateForm, canHaveDisplayHorizontal, canHaveOptionCorrect, canHaveOptionValue} = this.props.element;
 
     const this_custom_attributes = this.props.customAttributes && this.props.customAttributes.length > 0 ? this.props.customAttributes : [];
+    const available_lists = this.props.lists && this.props.lists.length > 0 ? this.props.lists : [];
 
     const this_files = this.props.files.length ? this.props.files : [];
     if (this_files.length < 1 || (this_files.length > 0 && this_files[0].id !== '')) {
@@ -187,7 +206,8 @@ export default class FormElementsEdit extends React.Component {
     console.log('12345');
     console.log(this.props);
     console.log(this_custom_attributes);
-    
+    console.log(available_lists);
+    const marr = {marginRight: '8px'};
 
     return (
       <div>
@@ -218,16 +238,40 @@ export default class FormElementsEdit extends React.Component {
           </div>
         }
 
-        { this_custom_attributes.length > 0 ?
+        { this.props.element.element === 'Attributes' && this_custom_attributes.length > 0 ?
           <div className="form-group">
             <label className="control-label">Select Attribute</label>
-            <select className="form-control" onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'selected_attribute', 'value')}>
+            <select defaultValue={this.props.element.selected_attribute || 'select'} className="form-control" onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'selected_attribute', 'value')}>
+              <option value="select" disabled={true}>Select</option>
               {this_custom_attributes.map(attr => <option value={attr.name} key={attr.name}>{attr.name}</option>)}
             </select>
           </div>
           :
           <React.Fragment />
         }
+        
+        { this.props.element.element === 'List' && available_lists.length > 0 ?
+          <div className="form-group">
+            <label className="control-label"><b>Select Lists</b></label>
+            <br/>
+            {/* <select defaultValue={this.props.element.selected_attribute || 'select'} className="form-control" onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'selected_lists', 'value')}>
+              <option value="select" disabled={true}>Select</option>
+              {available_lists.map(attr => <option value={attr.list_id} key={attr.list_id}>{attr.list_name}</option>)}
+            </select> */}
+            {available_lists.map(attr => {
+              console.log(this.state.element.selected_lists);
+              if (this.state.element.selected_lists.includes(attr.list_id.toString())) {
+                return (<div><label><input checked={true} type="checkbox" value={attr.list_id} name={attr.list_name} key={attr.list_id} style={marr} onChange={this.editElementProp.bind(this, 'selected_lists', 'value')} />{attr.list_name}</label></div>)
+              } else {
+                return (<div><label><input type="checkbox" value={attr.list_id} name={attr.list_name} key={attr.list_id} style={marr} onChange={this.editElementProp.bind(this, 'selected_lists', 'value')} />{attr.list_name}</label></div>)
+              }
+            })}
+            <hr />
+          </div>
+          :
+          <React.Fragment />
+        }
+
         { this.props.element.hasOwnProperty('href') &&
           <div className="form-group">
             <TextAreaAutosize type="text" className="form-control" defaultValue={this.props.element.href} onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'href', 'value')} />
@@ -266,15 +310,29 @@ export default class FormElementsEdit extends React.Component {
               toolbar={toolbar_options}
               defaultEditorState={editorState}
               onBlur={this.updateElement.bind(this)}
-              onEditorStateChange={this.onEditorStateChange.bind(this, 0, 'label')} />
+              onEditorStateChange={this.onEditorStateChange.bind(this, 0, 'label')}
+            />
 
             <br />
-            <div className="checkbox">
-              <label>
-                <input type="checkbox" checked={this_checked} value={true} onChange={this.editElementProp.bind(this, 'required', 'checked')} />
-                Required
-              </label>
-            </div>
+
+            {
+              this.state.element.selected_attribute
+                ?
+              <div className="checkbox">
+                <label>
+                  <input
+                    disabled={this.state.element.required && !this.state.element.configuration.null_supported}
+                    type="checkbox"
+                    checked={this_checked}
+                    value={true}
+                    onChange={this.editElementProp.bind(this, 'required', 'checked')}
+                  />
+                  Required
+                </label>
+              </div>
+                :
+              <React.Fragment />
+            }
             { this.props.element.hasOwnProperty('readOnly') &&
               <div className="checkbox">
                 <label>
