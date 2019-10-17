@@ -294,11 +294,11 @@ export default class FormElementsEdit extends React.Component {
             <div className="row">
               <div className="col-sm-3">
                 <label className="control-label" htmlFor="elementWidth">Width:</label>
-                <input id="elementWidth" type="text" className="form-control" defaultValue={this.props.element.width} onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'width', 'value')} />
+                <input id="elementWidth" type="number" className="form-control" defaultValue={650} onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'width', 'value')} />
               </div>
               <div className="col-sm-3">
                 <label className="control-label" htmlFor="elementHeight">Height:</label>
-                <input id="elementHeight" type="text" className="form-control" defaultValue={this.props.element.height} onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'height', 'value')} />
+                <input id="elementHeight" type="number" className="form-control" defaultValue={400} onBlur={this.updateElement.bind(this)} onChange={this.editElementProp.bind(this, 'height', 'value')} />
               </div>
             </div>
           </div>

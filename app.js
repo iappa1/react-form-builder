@@ -31,7 +31,7 @@ const display_data = {
 	italic: true,
 	underline: true
   },
-	"task_data": [{
+	/*"task_data": [{
 		"id": "445E3CBB-54A5-4690-8591-BB106506D70D",
 		"element": "Header",
 		"text": "Heading",
@@ -260,7 +260,247 @@ const display_data = {
 		"field_name": "list_input_4A31E042-5273-43A6-940B-CEC6F6CCE242",
 		"label": "<strong><span style=\"color: #ff8228;font-size: 36px;font-family: Times New Roman;\">Select the list</span></strong> ",
 		"dirty": false
-	}]
+	}]*/
+	task_data: [
+		{
+			canHaveAlternateForm: true,
+			canHaveAnswer: true,
+			canHaveDisplayHorizontal: true,
+			canHaveOptionCorrect: true,
+			canHaveOptionValue: true,
+			configuration: {
+				default_value: "",
+				name: "First Name",
+				null_supported: false,
+				tag: "fname",
+				type: "text"
+			},
+			dirty: false,
+			element: "Attributes",
+			field_name: "attribute_input_4F19AFF5-F29C-4858-A241-E9F4615E3EBC",
+			id: "D63B6BB1-5357-4B23-8458-483E83EDE7EE",
+			label: "First name ",
+			required: true,
+			selected_attribute: "First Name",
+			static: undefined,
+			text: "Attribute",
+		},
+		{
+			canHaveAlternateForm: true,
+			canHaveAnswer: true,
+			canHaveDisplayHorizontal: true,
+			canHaveOptionCorrect: true,
+			canHaveOptionValue: true,
+			configuration: {
+				default_value: "",
+				name: "First Name",
+				null_supported: false,
+				tag: "fname",
+				type: "text"
+			},
+			dirty: false,
+			element: "Attributes",
+			field_name: "attribute_input_4F19AFF5-F29C-4858-A241-E9F4615E3EBC",
+			id: "D63B6BB1-5357-4B23-8458-483E83EDE7EE",
+			label: "First name ",
+			required: true,
+			selected_attribute: "First Name",
+			static: undefined,
+			text: "Attribute",
+		},
+		{
+			bold: false,
+			canHaveAlternateForm: true,
+			canHaveDisplayHorizontal: true,
+			canHaveOptionCorrect: true,
+			canHaveOptionValue: true,
+			content: `<strong><span style="font-size: 60px;font-family: Times New Roman;">Sign up form</span></strong>`,
+			dirty: false,
+			element: "Header",
+			id: "2A4F75B4-3188-4642-BFE8-E2B23A9341A4",
+			italic: false,
+			required: false,
+			static: true,
+			text: "Heading"
+		},
+	{
+		bold: false,
+		canHaveAlternateForm: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		content: `<span style="color: #000000;font-size: 72px;">Hi!</span> `,
+		dirty: false,
+		element: "Label",
+		id: "9B5851A8-E9E0-4D14-89EE-3B6A44849051",
+		italic: false,
+		required: false,
+		static: true,
+		text: "Text"
+	},
+	{
+		canHaveAlternateForm: true,
+		canHaveAnswer: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		configuration: {
+			default_value: "",
+			name: "Email",
+			null_supported: false,
+			tag: "email",
+			type: "email",
+		},
+		dirty: false,
+		element: "Attributes",
+		field_name: "attribute_input_33F53488-969B-45C3-8182-F526A7035A8C",
+		id: "F0764368-16CE-4AC3-8225-EC68368896F2",
+		label: "Email ",
+		required: true,
+		selected_attribute: "Email",
+		static: undefined,
+		text: "Attribute"
+	},
+	{
+		canHaveAlternateForm: true,
+		canHaveAnswer: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		configuration: {type: "number", name: "Age", default_value: "", tag: "age", null_supported: true},
+		dirty: false,
+		element: "Attributes",
+		field_name: "attribute_input_586AE63E-B89B-4F52-8AD9-4C16E6E61D52",
+		id: "CB2CAF92-D111-4FE9-8E90-480A6B25395E",
+		label: "Age ",
+		required: false,
+		selected_attribute: "Age",
+		static: undefined,
+		text: "Attribute"
+	},
+	{
+		canHaveAlternateForm: true,
+		canHaveAnswer: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		configuration: {
+			default_value: "",
+			name: "DOB",
+			null_supported: true,
+			tag: "dob",
+			type: "date"
+		},
+		dirty: false,
+		element: "Attributes",
+		field_name: "attribute_input_A261A81F-B83C-413A-8C68-798C249F31E0",
+		id: "09467C64-B2A6-4638-8F30-9C8F4D5AE49A",
+		label: "Date of Birth ",
+		required: false,
+		selected_attribute: "DOB",
+		static: undefined,
+		text: "Attribute",
+	},
+	{
+		canHaveAlternateForm: true,
+		canHaveAnswer: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		configuration: {
+			default_value: "",
+			name: "Phone",
+			null_supported: true,
+			tag: "phone",
+			type: "phone"
+		},
+		dirty: false,
+		element: "Attributes",
+		field_name: "attribute_input_B278C797-E46E-4F6A-8720-08C4A7433F58",
+		id: "B320C87B-0176-49C1-B291-EA3FD703D350",
+		label: "Phone",
+		required: true,
+		static: undefined,
+		text: "Attribute"
+	},
+	{
+		canHaveAlternateForm: true,
+		canHaveAnswer: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		configuration: {
+			default_value: false,
+			name: "Eligible",
+			null_supported: true,
+			tag: "elg",
+			type: "boolean",
+		},
+		dirty: false,
+		element: "Attributes",
+		field_name: "attribute_input_CD3296A0-BC36-4BBB-9CBC-23F0F674B821",
+		id: "62B3EB0A-2E7A-4DCD-B5A9-B65DCD04C1F5",
+		label: "Eligibility ",
+		options: [
+			{
+				key: "radiobuttons_option_1",
+				text: "yes",
+				value: true,
+			},
+			{
+				key: "radiobuttons_option_2",
+				text: "no",
+				value: false,
+			}
+		],
+		required: false,
+		selected_attribute: "Eligible",
+		static: undefined,
+		text: "Attribute"
+	},
+	{
+		canHaveAlternateForm: true,
+		canHaveAnswer: true,
+		canHaveDisplayHorizontal: true,
+		canHaveOptionCorrect: true,
+		canHaveOptionValue: true,
+		dirty: false,
+		element: "List",
+		field_name: "list_input_708D8E47-588B-4201-9EA7-863FAE047282",
+		id: "5A3E27BA-630F-4961-A6ED-4E2C594059D8",
+		label: "Select the list ",
+		lists: [
+			{
+				list_id: 1,
+				list_name: "first list",
+			},
+			{
+				list_id: 2,
+				list_name: "second list",
+			},
+			{
+				list_id: 3,
+				list_name: "third list",
+			},
+		],
+		options: [
+			{
+				key: "radiobuttons_option_1",
+				text: "first list",
+				value: "1",
+			},
+			{
+				key: "radiobuttons_option_2",
+				text: "second list",
+				value: "2",
+			},
+		],
+		required: false,
+		selected_lists: ["1","2"],
+		static: undefined,
+		text: "list"
+	}
+]
 }
 
 
@@ -308,9 +548,9 @@ export default class App extends Component {
             form_method="POST"
             data={display_data.task_data}
           /> */}
-          {/* <RenderPreview
+          <RenderPreview
             data={display_data}
-          /> */}
+          />
           <div className="spacee" />
           <iframe className="fframe" width="540" height="500" src="https://sibforms.com/serve/MUIEALx_TJv03EqqO8jBu2utszFpcqvbijfefZSdC7qEpQ-yFt--Wu7qFJzuujYVoicjpizQLNos5NnfqI_yRcBv6rup8Ae1XWbdgrPLgYeXFkjED4CMDRD4uTgWgmjcC1XWuOrVgrzgA1bWlTOlMBtFKQPlaagdosnIGOrftGUsRgjYhPEgpe2e9i-J7N-ghWwow92E87PldY5O" frameborder="0" scrolling="auto" allowfullscreen></iframe>
           <div className="spacee" />

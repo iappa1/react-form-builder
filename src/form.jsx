@@ -299,10 +299,18 @@ export default class ReactForm extends React.Component {
 
   getSimpleElement(item, type) {
     const Element = FormElements[type];
+    console.log(item);
+    console.log(type);
+    console.log(Element);
+    
     if (item.element === "List") {
       return (<Element ref={c => this.inputs[item.field_name] = c} mutable={true} key={`form_${item.id}`} data={item} />);
     } else {
-      return (<Element ref={c => this.inputs[item.field_name] = c} defaultValue={item.configuration.default_value} mutable={true} key={`form_${item.id}`} data={item} />);
+      if (item.configuration && item.configuration.default_value) {
+        return (<Element ref={c => this.inputs[item.field_name] = c} defaultValue={item.configuration.default_value} mutable={true} key={`form_${item.id}`} data={item} />);
+      } else {
+        return (<Element ref={c => this.inputs[item.field_name] = c} mutable={true} key={`form_${item.id}`} data={item} />);
+      }
     }
   }
 
@@ -377,7 +385,6 @@ export default class ReactForm extends React.Component {
         case 'Camera':
           return <Camera ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only || item.readOnly} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._getDefaultValue(item)} />;
         case 'List':
-          console.log("inide list");
           // return <Checkboxes ref={c => this.inputs[item.field_name] = c} read_only={this.props.read_only} handleChange={this.handleChange} mutable={true} key={`form_${item.id}`} data={item} defaultValue={this._optionsDefaultValue(item)} />;
           return this.getSimpleElement(item, 'Lists');
         case 'Attributes':
@@ -399,10 +406,10 @@ export default class ReactForm extends React.Component {
             return this.getSimpleElement(item, 'DateInput');
           } else if (item.configuration.type === 'boolean') {
             return this.getSimpleElement(item, 'RadioButtons');
-          }
-          
-        // default:
-        //   return this.getSimpleElement(item);
+          }  
+
+        default:
+          return this.getSimpleElement(item, item.element);
       }
     });
 
