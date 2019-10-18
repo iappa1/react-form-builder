@@ -177,7 +177,7 @@ export default class Preview extends React.Component {
 
     const {color, background, borderRadius} = this.props.submitButton;
     
-    const toolbarStyle = {display: 'flex'};
+    const toolbarStyle = {display: 'flex', padding: '0 20px'};
 
     const submitStyle = {
       color,

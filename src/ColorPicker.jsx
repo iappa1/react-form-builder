@@ -14,7 +14,7 @@ export default class extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
     
     if (this.props.default) {
       this.setState({

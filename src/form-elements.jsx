@@ -215,8 +215,8 @@ class Attributes extends React.Component {
   }
 
   render() {
-    console.log("^^^^^^^^^^^^^^^^^^^^^attr");
-    console.log(this.props);
+    // console.log("^^^^^^^^^^^^^^^^^^^^^attr");
+    // console.log(this.props);
 
     if (this.props.data && this.props.data.configuration && this.props.data.configuration.type === "boolean") {
       
@@ -998,7 +998,7 @@ class Camera extends React.Component {
         sourceDataURL = `data:image/png;base64,${this.props.defaultValue}`;
       }
     }
-    console.log('sourceDataURL', sourceDataURL);
+    // console.log('sourceDataURL', sourceDataURL);
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />

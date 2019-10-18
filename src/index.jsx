@@ -40,7 +40,7 @@ class ReactFormBuilder extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     
     const toolbarProps = {};
     if (this.props.toolbarItems) { toolbarProps.items = this.props.toolbarItems; }

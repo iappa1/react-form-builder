@@ -310,7 +310,7 @@ export default class Toolbar extends React.Component {
       elementOptions.options = Toolbar._defaultItemOptions(elementOptions.element);
     }
 
-    console.log(elementOptions);
+    // console.log(elementOptions);
     return elementOptions;
   }
 

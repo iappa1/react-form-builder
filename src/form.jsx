@@ -299,9 +299,9 @@ export default class ReactForm extends React.Component {
 
   getSimpleElement(item, type) {
     const Element = FormElements[type];
-    console.log(item);
-    console.log(type);
-    console.log(Element);
+    // console.log(item);
+    // console.log(type);
+    // console.log(Element);
     
     if (item.element === "List") {
       return (<Element ref={c => this.inputs[item.field_name] = c} mutable={true} key={`form_${item.id}`} data={item} />);
@@ -315,7 +315,7 @@ export default class ReactForm extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
 
     // submit button style start
 

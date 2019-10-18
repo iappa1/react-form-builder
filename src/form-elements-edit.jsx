@@ -167,7 +167,7 @@ export default class FormElementsEdit extends React.Component {
   }
 
   render() {
-    console.log("S: ", this.state);
+    // console.log("S: ", this.state);
     
     if (this.state.dirty) {
       this.props.element.dirty = true;
@@ -203,10 +203,10 @@ export default class FormElementsEdit extends React.Component {
       editorState = this.convertFromHTML(this.props.element.label);
     }
 
-    console.log('12345');
-    console.log(this.props);
-    console.log(this_custom_attributes);
-    console.log(available_lists);
+    // console.log('12345');
+    // console.log(this.props);
+    // console.log(this_custom_attributes);
+    // console.log(available_lists);
     const marr = {marginRight: '8px'};
 
     return (
@@ -259,7 +259,7 @@ export default class FormElementsEdit extends React.Component {
               {available_lists.map(attr => <option value={attr.list_id} key={attr.list_id}>{attr.list_name}</option>)}
             </select> */}
             {available_lists.map(attr => {
-              console.log(this.state.element.selected_lists);
+              // console.log(this.state.element.selected_lists);
               if (this.state.element.selected_lists.includes(attr.list_id.toString())) {
                 return (<div><label><input checked={true} type="checkbox" value={attr.list_id} name={attr.list_name} key={attr.list_id} style={marr} onChange={this.editElementProp.bind(this, 'selected_lists', 'value')} />{attr.list_name}</label></div>)
               } else {
